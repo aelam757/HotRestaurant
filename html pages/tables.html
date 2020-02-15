@@ -55,3 +55,78 @@
 
     </div>
 </body>
+
+<script type="text/javascript">
+
+    function runTableQuery() {
+        const currentURL = window.location.origin;
+        $.ajax({ url: currentURL + "/api/tables", method: "GET"})
+        .done(function(tableData) {
+
+            console.log("---------------------");
+            console.log("URL: " + currentURL + "/api/tables");
+            console.log("---------------------");
+
+            console.log(tableData);
+            console.log("---------------------");
+
+            for (let i = 0; i < tableData.length; i++) {
+                let tableSection = $("<div>");
+                tableSection.addClass("well");
+                tableSection.attr("id", "tableWell-" + i + 1);
+                $("#tableSection").append(tableSection);
+
+                let tableNumber = i + 1;
+
+                $("#tableWell-" + i + 1).append("<h2><span class='badge badge-primary'>" + tableNumber + "</span> | " + tableData[i].customerID + "</h2>");
+            }
+        });
+    }
+
+    function runWaitListQuery() {
+
+        const currentURL = window.location.origin;
+
+        $.ajax({ url: currentURL + "/api/waitlist", method: "GET" })
+            .done(function (waitlistData) {
+
+                console.log("------------------------------------");
+                console.log("URL: " + currentURL + "/api/waitlist");
+                console.log("------------------------------------");
+
+                console.log(waitlistData);
+                console.log("------------------------------------");
+
+                for (let i = 0; i < waitlistData.length; i++) {
+
+                    let waitlistSection = $("<div>");
+                    waitlistSection.addClass("well");
+                    waitlistSection.attr("id", "waitlistWell-" + i + 1);
+                    $("#waitlistSection").append(waitlistSection);
+
+                    let tableNumber = i + 1;
+
+                    $("#waitlistWell-" + i + 1).append("<h2><span class='badge badge-primary'>" + tableNumber + "</span> | " + waitlistData[i].customerID + "</h2>");
+                }
+            });
+    }
+
+    function clearTable() {
+
+        const currentURL = window.location.origin;
+        $.ajax({ url: currentURL + "/api/clear", method: "POST" });
+    }
+
+    $("#clear").on("click", function () {
+        alert("Clearing...");
+        clearTable();
+
+        location.reload();
+
+    });
+
+        runTableQuery();
+        runWaitListQuery();
+
+</script>
+</html>
